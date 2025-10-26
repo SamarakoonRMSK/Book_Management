@@ -57,7 +57,16 @@ export default function BooksPage() {
 
   const [deleteBook, { loading: deleteLoading }] = useMutation(DELETE_BOOK, {
     awaitRefetchQueries: true,
-    refetchQueries: [{ query: GET_BOOKS }], 
+    refetchQueries: [
+      {
+        query: GET_BOOKS,
+        variables: {
+          filter: debouncedSearchTerm,
+          limit: PAGE_SIZE,
+          offset: (page - 1) * PAGE_SIZE,
+        },
+      },
+    ],
   });
 
   const handleDelete = (id: string) => {
